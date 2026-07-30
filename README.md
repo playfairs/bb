@@ -104,7 +104,3 @@ If you prefer a reproducible dev environment:
 ```bash
 nix develop
 ```
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
