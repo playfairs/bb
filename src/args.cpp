@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string_view>
 
+#include "bb/filesize.h"
+
 namespace bb {
 namespace {
 
 void print_general_help(const char* program_name) {
   std::cout << "bb - ByteBuilder\n";
-  std::cout <<"\n";
+  std::cout << "\n";
   std::cout << "Usage:\n";
   std::cout << "  " << program_name << " <create|verify> [options]\n";
   std::cout << "\n";
@@ -61,7 +63,123 @@ bool parse_uint64(std::string_view input, std::uint64_t& value) {
   return ec == std::errc{} && ptr == end;
 }
 
+std::string prompt_for_input(const std::string& prompt_text) {
+  std::cout << prompt_text;
+  std::string input;
+  std::getline(std::cin, input);
+  return input;
 }
+
+Status run_interactive_prompt(Options& options) {
+  std::cout << "ByteBuilder - Interactive Create Mode\n\n";
+
+  while (options.output_path.empty()) {
+    std::string output = prompt_for_input("Output file path: ");
+    if (!output.empty()) {
+      options.output_path = output;
+    } else {
+      std::cout << "Output path is required.\n";
+    }
+  }
+
+  while (options.size_bytes == 0) {
+    std::string size_str = prompt_for_input("File size (e.g., 1MiB, 512K, 2G): ");
+    if (!size_str.empty()) {
+      Status size_status;
+      options.size_bytes = parse_size(size_str, size_status);
+      if (!size_status.ok) {
+        std::cout << "Invalid size: " << size_status.message << "\n";
+      }
+    } else {
+      std::cout << "Size is required.\n";
+    }
+  }
+
+  std::string pattern_input =
+      prompt_for_input("Pattern (zero/incrementing/random) [default: zero]: ");
+  if (pattern_input.empty()) {
+    options.pattern = PatternKind::Zero;
+  } else if (pattern_input == "zero") {
+    options.pattern = PatternKind::Zero;
+  } else if (pattern_input == "incrementing") {
+    options.pattern = PatternKind::Incrementing;
+  } else if (pattern_input == "random") {
+    options.pattern = PatternKind::Random;
+  } else {
+    std::cout << "Invalid pattern, defaulting to zero.\n";
+    options.pattern = PatternKind::Zero;
+  }
+
+  if (options.pattern != PatternKind::Zero) {
+    std::string seed_input =
+        prompt_for_input("Seed for random/incrementing generation [default: 0xC0FFEE]: ");
+    if (!seed_input.empty()) {
+      std::uint64_t parsed_seed = 0;
+      if (parse_uint64(seed_input, parsed_seed)) {
+        options.seed = parsed_seed;
+      } else {
+        std::cout << "Invalid seed, using default.\n";
+      }
+    }
+  }
+
+  std::string sparse_input =
+      prompt_for_input("Create sparse file when possible? (y/n) [default: n]: ");
+  if (sparse_input == "y" || sparse_input == "Y" || sparse_input == "yes" ||
+      sparse_input == "Yes") {
+    options.sparse = true;
+  }
+
+  std::string progress_input = prompt_for_input("Show progress? (y/n) [default: y]: ");
+  if (progress_input == "n" || progress_input == "N" || progress_input == "no" ||
+      progress_input == "No") {
+    options.show_progress = false;
+  }
+
+  std::string verify_input =
+      prompt_for_input("Verify file immediately after writing? (y/n) [default: n]: ");
+  if (verify_input == "y" || verify_input == "Y" || verify_input == "yes" ||
+      verify_input == "Yes") {
+    options.verify_after_write = true;
+  }
+
+  std::cout << "\nConfiguration Summary:\n";
+  std::cout << "  Output: " << options.output_path.string() << "\n";
+  std::cout << "  Size: " << format_size(options.size_bytes) << "\n";
+
+  std::string pattern_str;
+  switch (options.pattern) {
+    case PatternKind::Zero:
+      pattern_str = "zero";
+      break;
+    case PatternKind::Incrementing:
+      pattern_str = "incrementing";
+      break;
+    case PatternKind::Random:
+      pattern_str = "random";
+      break;
+  }
+  std::cout << "  Pattern: " << pattern_str << "\n";
+
+  if (options.pattern != PatternKind::Zero) {
+    std::cout << "  Seed: " << options.seed << "\n";
+  }
+
+  std::cout << "  Sparse: " << (options.sparse ? "yes" : "no") << "\n";
+  std::cout << "  Progress: " << (options.show_progress ? "yes" : "no") << "\n";
+  std::cout << "  Verify: " << (options.verify_after_write ? "yes" : "no") << "\n";
+
+  std::string confirm = prompt_for_input("Proceed with file creation? (y/n): ");
+  if (confirm != "y" && confirm != "Y" && confirm != "yes" && confirm != "Yes") {
+    std::cout << "Operation cancelled by user.\n";
+    return Status::failure("operation cancelled by user");
+  }
+
+  std::cout << "Starting file creation...\n";
+  return Status::success();
+}
+
+}  // namespace
 
 Status parse_args(int argc, char** argv, Options& options) {
   if (argc < 2) {
@@ -73,6 +191,9 @@ Status parse_args(int argc, char** argv, Options& options) {
   const std::string_view command_name = argv[1];
   if (command_name == "create") {
     options.command = Command::Create;
+    if (argc == 2) {
+      return run_interactive_prompt(options);
+    }
   } else if (command_name == "verify") {
     options.command = Command::Verify;
   } else if (command_name == "--help" || command_name == "help" || command_name == "-h") {
@@ -151,4 +272,4 @@ Status parse_args(int argc, char** argv, Options& options) {
   return Status::success();
 }
 
-}
+}  // namespace bb
