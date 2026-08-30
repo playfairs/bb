@@ -22,4 +22,4 @@ std::uint64_t next_random(std::uint64_t& state) {
   return state;
 }
 
-}
+}  // namespace bb

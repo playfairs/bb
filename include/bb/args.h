@@ -28,4 +28,4 @@ struct Options {
 
 Status parse_args(int argc, char** argv, Options& options);
 
-}
+}  // namespace bb

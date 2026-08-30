@@ -1,8 +1,8 @@
 #include "bb/filesize.h"
 
 #include <array>
-#include <charconv>
 #include <cctype>
+#include <charconv>
 #include <cstdint>
 #include <limits>
 #include <string>
@@ -23,7 +23,7 @@ std::string trim(std::string_view input) {
   return std::string(input.substr(begin, end - begin));
 }
 
-}
+}  // namespace
 
 std::uint64_t parse_size(std::string_view input, Status& status) {
   status = Status::success();
@@ -92,4 +92,4 @@ std::string format_size(std::uint64_t bytes) {
   return std::to_string(static_cast<unsigned long long>(value)) + " " + units[unit_index];
 }
 
-}
+}  // namespace bb

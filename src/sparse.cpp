@@ -28,4 +28,4 @@ Status ensure_sparse_file(const std::filesystem::path& path, std::uint64_t size_
   return Status::success();
 }
 
-}
+}  // namespace bb

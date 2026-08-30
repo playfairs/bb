@@ -19,4 +19,4 @@ class ProgressIndicator {
   bool started_{false};
 };
 
-}
+}  // namespace bb

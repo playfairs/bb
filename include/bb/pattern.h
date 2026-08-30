@@ -25,4 +25,4 @@ class PatternGenerator {
 
 const char* to_string(PatternKind pattern);
 
-}
+}  // namespace bb

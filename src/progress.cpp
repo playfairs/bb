@@ -30,4 +30,4 @@ void ProgressIndicator::finish() {
   }
 }
 
-}
+}  // namespace bb

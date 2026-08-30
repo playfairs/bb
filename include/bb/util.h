@@ -16,4 +16,4 @@ struct Status {
 std::string describe_error(const std::error_code& error_code);
 std::string to_lower(std::string value);
 
-}
+}  // namespace bb

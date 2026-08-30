@@ -8,12 +8,8 @@
 
 namespace bb {
 
-Status write_file(const std::filesystem::path& path,
-                  std::uint64_t size_bytes,
-                  PatternKind pattern,
-                  std::uint64_t seed,
-                  bool sparse,
-                  std::ostream* progress_stream,
+Status write_file(const std::filesystem::path& path, std::uint64_t size_bytes, PatternKind pattern,
+                  std::uint64_t seed, bool sparse, std::ostream* progress_stream,
                   WriteStatistics* statistics) {
   if (path.empty()) {
     return Status::failure("output path must be provided");
@@ -44,9 +40,11 @@ Status write_file(const std::filesystem::path& path,
   std::uint64_t offset = 0;
   while (offset < size_bytes) {
     const std::uint64_t remaining = size_bytes - offset;
-    const std::size_t current_chunk = static_cast<std::size_t>(remaining < chunk_size ? remaining : chunk_size);
+    const std::size_t current_chunk =
+        static_cast<std::size_t>(remaining < chunk_size ? remaining : chunk_size);
     generator.fill(std::span<std::byte>(buffer.data(), current_chunk), offset);
-    output.write(reinterpret_cast<const char*>(buffer.data()), static_cast<std::streamsize>(current_chunk));
+    output.write(reinterpret_cast<const char*>(buffer.data()),
+                 static_cast<std::streamsize>(current_chunk));
     if (!output) {
       return Status::failure("write failed while producing output data");
     }
@@ -66,4 +64,4 @@ Status write_file(const std::filesystem::path& path,
   return Status::success();
 }
 
-}
+}  // namespace bb

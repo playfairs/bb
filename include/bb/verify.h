@@ -16,10 +16,8 @@ struct VerificationResult {
   std::string message{};
 };
 
-VerificationResult verify_file(const std::filesystem::path& path,
-                                std::uint64_t expected_size,
-                                PatternKind pattern,
-                                std::uint64_t seed,
-                                std::ostream* progress_stream = nullptr);
+VerificationResult verify_file(const std::filesystem::path& path, std::uint64_t expected_size,
+                               PatternKind pattern, std::uint64_t seed,
+                               std::ostream* progress_stream = nullptr);
 
-}
+}  // namespace bb

@@ -31,4 +31,4 @@ std::string to_lower(std::string value) {
   return value;
 }
 
-}
+}  // namespace bb

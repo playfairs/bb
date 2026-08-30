@@ -1,0 +1,17 @@
+{
+  pkgs,
+  treefmt-nix,
+}:
+(treefmt-nix.lib.evalModule pkgs (_: {
+  projectRootFile = "flake.nix";
+  programs = {
+    nixfmt.enable = true;
+    taplo.enable = true;
+    clang-format.enable = true;
+  };
+  settings.formatter.clang-format = {
+    options = [
+      "--style=file:.clang-format"
+    ];
+  };
+})).config.build.wrapper

@@ -7,11 +7,9 @@
 
 namespace bb {
 
-VerificationResult verify_file(const std::filesystem::path& path,
-                                std::uint64_t expected_size,
-                                PatternKind pattern,
-                                std::uint64_t seed,
-                                std::ostream* progress_stream) {
+VerificationResult verify_file(const std::filesystem::path& path, std::uint64_t expected_size,
+                               PatternKind pattern, std::uint64_t seed,
+                               std::ostream* progress_stream) {
   VerificationResult result;
   if (!std::filesystem::exists(path)) {
     result.ok = false;
@@ -54,7 +52,8 @@ VerificationResult verify_file(const std::filesystem::path& path,
       break;
     }
 
-    generator.fill(std::span<std::byte>(expected_buffer.data(), static_cast<std::size_t>(bytes_read)), offset);
+    generator.fill(
+        std::span<std::byte>(expected_buffer.data(), static_cast<std::size_t>(bytes_read)), offset);
     for (std::streamsize index = 0; index < bytes_read; ++index) {
       const std::byte expected = expected_buffer[static_cast<std::size_t>(index)];
       const char actual = actual_buffer[static_cast<std::size_t>(index)];
@@ -79,4 +78,4 @@ VerificationResult verify_file(const std::filesystem::path& path,
   return result;
 }
 
-}
+}  // namespace bb

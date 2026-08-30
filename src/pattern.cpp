@@ -42,4 +42,4 @@ const char* to_string(PatternKind pattern) {
   return "unknown";
 }
 
-}
+}  // namespace bb
