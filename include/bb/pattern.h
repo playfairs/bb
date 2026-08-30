@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <span>
 
-namespace bytebuilder {
+namespace bb {
 
 enum class PatternKind {
   Zero,

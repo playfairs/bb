@@ -1,4 +1,4 @@
-# ByteBuilder v2.0.0
+# bb (ByteBuilder)
 
 A simple C++ tool for generating files of any size with custom content. Perfect for testing storage, benchmarking, or creating dummy data.
 
@@ -46,45 +46,45 @@ export PATH="$HOME/.local/bin:$PATH"
 ### Create a file
 
 ```bash
-./builddir/bytebuilder create --output /tmp/example.bin --size 1MiB --pattern zero
+./builddir/bb create --output /tmp/example.bin --size 1MiB --pattern zero
 
 # or
 
-bytebuilder create --output /tmp/example.bin --size 1MiB --pattern zero
+bb create --output /tmp/example.bin --size 1MiB --pattern zero
 ```
 
 ### Create a sparse file
 
 ```bash
-./builddir/bytebuilder create --output /tmp/example.bin --size 1GiB --pattern zero --sparse
+./builddir/bb create --output /tmp/example.bin --size 1GiB --pattern zero --sparse
 
 # or
 
-bytebuilder create --output /tmp/example.bin --size 1GiB --pattern zero --sparse
+bb create --output /tmp/example.bin --size 1GiB --pattern zero --sparse
 ```
 
 ### Verify a file
 
 ```bash
-./builddir/bytebuilder verify --output /tmp/example.bin --size 1MiB --pattern zero
+./builddir/bb verify --output /tmp/example.bin --size 1MiB --pattern zero
 
 # or
 
-bytebuilder verify --output /tmp/example.bin --size 1MiB --pattern zero
+bb verify --output /tmp/example.bin --size 1MiB --pattern zero
 ```
 
 ### Show help
 
 ```bash
-./builddir/bytebuilder --help
-./builddir/bytebuilder create --help
-./builddir/bytebuilder verify --help
+./builddir/bb --help
+./builddir/bb create --help
+./builddir/bb verify --help
 
 # or
 
-bytebuilder --help
-bytebuilder create --help
-bytebuilder verify --help
+bb --help
+bb create --help
+bb verify --help
 ```
 
 ## Supported options

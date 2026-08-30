@@ -1,8 +1,8 @@
-#include "bytebuilder/pattern.h"
+#include "bb/pattern.h"
 
 #include <random>
 
-namespace bytebuilder {
+namespace bb {
 
 PatternGenerator::PatternGenerator(PatternKind kind, std::uint64_t seed)
     : kind_(kind), seed_(seed) {}

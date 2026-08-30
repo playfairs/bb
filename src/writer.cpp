@@ -1,12 +1,12 @@
-#include "bytebuilder/writer.h"
+#include "bb/writer.h"
 
 #include <fstream>
 #include <vector>
 
-#include "bytebuilder/progress.h"
-#include "bytebuilder/sparse.h"
+#include "bb/progress.h"
+#include "bb/sparse.h"
 
-namespace bytebuilder {
+namespace bb {
 
 Status write_file(const std::filesystem::path& path,
                   std::uint64_t size_bytes,

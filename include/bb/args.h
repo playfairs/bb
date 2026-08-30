@@ -3,11 +3,11 @@
 #include <cstdint>
 #include <filesystem>
 
-#include "bytebuilder/filesize.h"
-#include "bytebuilder/pattern.h"
-#include "bytebuilder/util.h"
+#include "bb/filesize.h"
+#include "bb/pattern.h"
+#include "bb/util.h"
 
-namespace bytebuilder {
+namespace bb {
 
 enum class Command {
   Create,

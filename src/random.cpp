@@ -1,9 +1,9 @@
-#include "bytebuilder/random.h"
+#include "bb/random.h"
 
 #include <charconv>
 #include <string>
 
-namespace bytebuilder {
+namespace bb {
 
 std::uint64_t make_seed(std::string_view input, std::uint64_t fallback) {
   if (input.empty()) {

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace bytebuilder {
+namespace bb {
 
 std::uint64_t make_seed(std::string_view input, std::uint64_t fallback);
 

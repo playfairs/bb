@@ -1,13 +1,13 @@
 #include <cassert>
 #include <cstdint>
 
-#include "bytebuilder/filesize.h"
+#include "bb/filesize.h"
 
 int main() {
-  bytebuilder::Status status;
-  const std::uint64_t bytes = bytebuilder::parse_size("1MiB", status);
+  bb::Status status;
+  const std::uint64_t bytes = bb::parse_size("1MiB", status);
   assert(status.ok);
   assert(bytes == 1024ULL * 1024ULL);
-  assert(bytebuilder::format_size(1536) == "1 KiB");
+  assert(bb::format_size(1536) == "1 KiB");
   return 0;
 }

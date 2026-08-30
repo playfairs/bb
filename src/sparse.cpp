@@ -1,9 +1,9 @@
-#include "bytebuilder/sparse.h"
+#include "bb/sparse.h"
 
 #include <filesystem>
 #include <fstream>
 
-namespace bytebuilder {
+namespace bb {
 
 Status ensure_sparse_file(const std::filesystem::path& path, std::uint64_t size_bytes) {
   if (path.parent_path() != ".") {

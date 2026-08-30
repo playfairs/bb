@@ -1,8 +1,8 @@
-#include "bytebuilder/progress.h"
+#include "bb/progress.h"
 
 #include <sstream>
 
-namespace bytebuilder {
+namespace bb {
 
 ProgressIndicator::ProgressIndicator(std::uint64_t total_bytes, std::ostream& stream)
     : total_bytes_(total_bytes), stream_(stream) {}

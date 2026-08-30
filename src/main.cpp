@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "bytebuilder/args.h"
-#include "bytebuilder/verify.h"
-#include "bytebuilder/writer.h"
+#include "bb/args.h"
+#include "bb/verify.h"
+#include "bb/writer.h"
 
 int main(int argc, char** argv) {
-  bytebuilder::Options options;
-  const bytebuilder::Status parse_status = bytebuilder::parse_args(argc, argv, options);
+  bb::Options options;
+  const bb::Status parse_status = bb::parse_args(argc, argv, options);
   if (!parse_status.ok) {
     std::cerr << parse_status.message << '\n';
     return 1;
@@ -15,9 +15,9 @@ int main(int argc, char** argv) {
     return 0;
   }
 
-  if (options.command == bytebuilder::Command::Create) {
-    bytebuilder::WriteStatistics statistics;
-    const bytebuilder::Status write_status = bytebuilder::write_file(
+  if (options.command == bb::Command::Create) {
+    bb::WriteStatistics statistics;
+    const bb::Status write_status = bb::write_file(
         options.output_path,
         options.size_bytes,
         options.pattern,
@@ -30,11 +30,11 @@ int main(int argc, char** argv) {
       return 1;
     }
 
-    std::cout << "wrote " << bytebuilder::format_size(statistics.bytes_written) << " to "
+    std::cout << "wrote " << bb::format_size(statistics.bytes_written) << " to "
               << options.output_path.string() << '\n';
 
     if (options.verify_after_write) {
-      const bytebuilder::VerificationResult verification = bytebuilder::verify_file(
+      const bb::VerificationResult verification = bb::verify_file(
           options.output_path,
           options.size_bytes,
           options.pattern,
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     return 0;
   }
 
-  const bytebuilder::VerificationResult verification = bytebuilder::verify_file(
+  const bb::VerificationResult verification = bb::verify_file(
       options.output_path,
       options.size_bytes,
       options.pattern,
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  std::cout << "verified " << bytebuilder::format_size(verification.bytes_checked) << " with checksum "
+  std::cout << "verified " << bb::format_size(verification.bytes_checked) << " with checksum "
             << verification.checksum << '\n';
   return 0;
 }

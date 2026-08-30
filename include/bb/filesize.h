@@ -4,9 +4,9 @@
 #include <string>
 #include <string_view>
 
-#include "bytebuilder/util.h"
+#include "bb/util.h"
 
-namespace bytebuilder {
+namespace bb {
 
 std::uint64_t parse_size(std::string_view input, Status& status);
 

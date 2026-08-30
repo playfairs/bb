@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <iostream>
 
-namespace bytebuilder {
+namespace bb {
 
 class ProgressIndicator {
  public:

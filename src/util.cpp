@@ -1,8 +1,8 @@
-#include "bytebuilder/util.h"
+#include "bb/util.h"
 
 #include <system_error>
 
-namespace bytebuilder {
+namespace bb {
 
 Status Status::success() {
   return {};

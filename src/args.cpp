@@ -1,14 +1,15 @@
-#include "bytebuilder/args.h"
+#include "bb/args.h"
 
 #include <charconv>
 #include <iostream>
 #include <string_view>
 
-namespace bytebuilder {
+namespace bb {
 namespace {
 
 void print_general_help(const char* program_name) {
-  std::cout << "ByteBuilder\n";
+  std::cout << "bb - ByteBuilder\n";
+  std::cout <<"\n";
   std::cout << "Usage:\n";
   std::cout << "  " << program_name << " <create|verify> [options]\n";
   std::cout << "\n";

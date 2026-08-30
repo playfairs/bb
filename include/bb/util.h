@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 
-namespace bytebuilder {
+namespace bb {
 
 struct Status {
   bool ok{true};

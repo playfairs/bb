@@ -4,10 +4,10 @@
 #include <filesystem>
 #include <ostream>
 
-#include "bytebuilder/pattern.h"
-#include "bytebuilder/util.h"
+#include "bb/pattern.h"
+#include "bb/util.h"
 
-namespace bytebuilder {
+namespace bb {
 
 struct WriteStatistics {
   std::uint64_t bytes_written{0};

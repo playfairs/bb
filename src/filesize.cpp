@@ -1,4 +1,4 @@
-#include "bytebuilder/filesize.h"
+#include "bb/filesize.h"
 
 #include <array>
 #include <charconv>
@@ -8,7 +8,7 @@
 #include <string>
 #include <string_view>
 
-namespace bytebuilder {
+namespace bb {
 namespace {
 
 std::string trim(std::string_view input) {

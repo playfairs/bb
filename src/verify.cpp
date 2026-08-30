@@ -1,11 +1,11 @@
-#include "bytebuilder/verify.h"
+#include "bb/verify.h"
 
 #include <fstream>
 #include <vector>
 
-#include "bytebuilder/progress.h"
+#include "bb/progress.h"
 
-namespace bytebuilder {
+namespace bb {
 
 VerificationResult verify_file(const std::filesystem::path& path,
                                 std::uint64_t expected_size,

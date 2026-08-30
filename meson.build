@@ -1,11 +1,11 @@
-project('bytebuilder', 'cpp', version: '2.0.0', default_options: ['cpp_std=c++20'])
+project('bb', 'cpp', version: '2.0.0', default_options: ['cpp_std=c++20'])
 
 cpp_args = ['-Wall', '-Wextra', '-Wpedantic']
 
 inc = include_directories('include')
 
-bytebuilder_lib = static_library(
-  'bytebuilder',
+bb_lib = static_library(
+  'bb',
   [
     'src/args.cpp',
     'src/filesize.cpp',
@@ -22,10 +22,10 @@ bytebuilder_lib = static_library(
 )
 
 executable(
-  'bytebuilder',
+  'bb',
   'src/main.cpp',
   include_directories: inc,
-  link_with: bytebuilder_lib,
+  link_with: bb_lib,
   cpp_args: cpp_args,
   install: true,
   install_dir: get_option('bindir'),
