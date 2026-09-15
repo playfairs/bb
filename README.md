@@ -11,17 +11,17 @@ A simple C++ tool for generating files of any size with custom content. Perfect 
 ## Requirements
 
 - Nix for the provided flake-based development shell
-   If nix isn't available to your disposal:
-      - A C++20-compatible compiler such as Clang, GCC, or MSVC
-      - Meson and Ninja
+- If Nix isn't available:
+  - A C++20-compatible compiler such as Clang, GCC, or MSVC
+  - Nox
 
 ## Build
 
 From the repository root:
 
 ```bash
-meson setup builddir
-meson compile -C builddir
+nox setup builddir
+nox compile -C builddir
 ```
 
 ## Install
@@ -29,15 +29,15 @@ meson compile -C builddir
 Install the binary to your configured prefix:
 
 ```bash
-meson install -C builddir
+nox install -C builddir
 ```
 
 For a userlocal installation that is available on your PATH:
 
 ```bash
-meson setup builddir --prefix="$HOME/.local"
-meson compile -C builddir
-meson install -C builddir
+nox setup builddir
+nox compile -C builddir
+nox install -C builddir --prefix="$HOME/.local"
 export PATH="$HOME/.local/bin:$PATH"
 ```
 

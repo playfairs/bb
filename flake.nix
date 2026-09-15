@@ -4,12 +4,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    nox.url = "github:playfairs/nox";
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      nox,
       treefmt-nix,
     }:
     let
@@ -40,10 +42,7 @@
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               clang
-              cmake
-              meson
-              ninja
-              pkg-config
+              nox.packages.${system}.default
               formatter
             ];
           };
