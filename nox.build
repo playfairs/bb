@@ -1,8 +1,9 @@
 project "bb" {
-    version = file("./VERSION")
+    description = "ByteBuilder"
     license = file("./LICENSE")
+    version = file("./VERSION")
 
-    cxx_executable "bb" {
+    executable.cpp "bb" {
         sources = [
         "src/args.cpp",
         "src/filesize.cpp",
