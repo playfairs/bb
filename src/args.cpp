@@ -13,16 +13,17 @@ void print_general_help(const char* program_name) {
   std::cout << "bb - ByteBuilder\n";
   std::cout << "\n";
   std::cout << "Usage:\n";
-  std::cout << "  " << program_name << " <create|verify> [options]\n";
+  std::cout << "  " << program_name << " <create|verify|size> [options]\n";
   std::cout << "\n";
   std::cout << "Commands:\n";
   std::cout << "  create    Create a file filled with a chosen pattern\n";
   std::cout << "  verify    Verify that a file matches the expected size and pattern\n";
+  std::cout << "  size      Show exact byte, bit, decimal, and binary sizes of a file\n";
   std::cout << "\n";
   std::cout << "Global options:\n";
   std::cout << "  --help                Show this help message\n";
   std::cout << "  --output <path>       Output file path\n";
-  std::cout << "  --size <size>         File size (for example 1MiB, 512K, 2G)\n";
+  std::cout << "  --size <size>         File size (for example 500MB, 1MiB, 512KiB, 2GiB)\n";
   std::cout << "  --pattern <name>      Pattern: zero, incrementing, random\n";
   std::cout << "  --seed <value>        Seed for random/incrementing generation\n";
   std::cout << "  --sparse              Create a sparse file when possible\n";
@@ -36,7 +37,7 @@ void print_create_help(const char* program_name) {
   std::cout << "\n";
   std::cout << "Create options:\n";
   std::cout << "  --output <path>       Destination file\n";
-  std::cout << "  --size <size>         Output size, such as 1MiB or 512K\n";
+  std::cout << "  --size <size>         Output size, such as 500MB or 1MiB\n";
   std::cout << "  --pattern <name>      zero, incrementing, or random\n";
   std::cout << "  --seed <value>        Seed for non-zero patterns\n";
   std::cout << "  --sparse              Create a sparse file when possible\n";
@@ -54,6 +55,11 @@ void print_verify_help(const char* program_name) {
   std::cout << "  --pattern <name>      zero, incrementing, or random\n";
   std::cout << "  --seed <value>        Seed used for generation\n";
   std::cout << "  --no-progress         Disable progress output\n";
+}
+
+void print_size_help(const char* program_name) {
+  std::cout << "Size usage:\n";
+  std::cout << "  " << program_name << " size <file>\n";
 }
 
 bool parse_uint64(std::string_view input, std::uint64_t& value) {
@@ -83,15 +89,25 @@ Status run_interactive_prompt(Options& options) {
   }
 
   while (options.size_bytes == 0) {
-    std::string size_str = prompt_for_input("File size (e.g., 1MiB, 512K, 2G): ");
-    if (!size_str.empty()) {
+    const std::string size_number = prompt_for_input("File size (number): ");
+    std::uint64_t magnitude = 0;
+    if (!parse_uint64(size_number, magnitude) || magnitude == 0) {
+      std::cout << "Enter a positive whole number.\n";
+      continue;
+    }
+
+    while (options.size_bytes == 0) {
+      const std::string unit = prompt_for_input("Unit (KB/MB/GB/TB/PB/KiB/MiB/GiB/TiB/PiB): ");
       Status size_status;
-      options.size_bytes = parse_size(size_str, size_status);
+      options.size_bytes = parse_size(size_number + unit, size_status);
       if (!size_status.ok) {
-        std::cout << "Invalid size: " << size_status.message << "\n";
+        if (size_status.message == "unsupported size suffix") {
+          std::cout << "Invalid unit: choose KB, MB, GB, TB, PB, KiB, MiB, GiB, TiB, or PiB.\n";
+        } else {
+          std::cout << "Invalid size: " << size_status.message << "\n";
+          break;
+        }
       }
-    } else {
-      std::cout << "Size is required.\n";
     }
   }
 
@@ -196,6 +212,18 @@ Status parse_args(int argc, char** argv, Options& options) {
     }
   } else if (command_name == "verify") {
     options.command = Command::Verify;
+  } else if (command_name == "size") {
+    options.command = Command::Size;
+    if (argc == 3 && (std::string_view(argv[2]) == "--help" || std::string_view(argv[2]) == "-h")) {
+      options.help_requested = true;
+      print_size_help(argv[0]);
+      return Status::success();
+    }
+    if (argc != 3) {
+      return Status::failure("usage: size <file>");
+    }
+    options.file_path = argv[2];
+    return Status::success();
   } else if (command_name == "--help" || command_name == "help" || command_name == "-h") {
     options.help_requested = true;
     print_general_help(argv[0]);

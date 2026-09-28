@@ -19,5 +19,14 @@ int main() {
   const bb::Status create_status = bb::parse_args(3, create_argv, create_options);
   assert(create_status.ok);
   assert(create_options.help_requested);
+
+  char size[] = "size";
+  char path[] = "example.bin";
+  char* size_argv[] = {program, size, path};
+  bb::Options size_options;
+  const bb::Status size_status = bb::parse_args(3, size_argv, size_options);
+  assert(size_status.ok);
+  assert(size_options.command == bb::Command::Size);
+  assert(size_options.file_path == "example.bin");
   return 0;
 }

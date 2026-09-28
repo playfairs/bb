@@ -25,7 +25,11 @@ Status write_file(const std::filesystem::path& path, std::uint64_t size_bytes, P
   }
 
   if (sparse && pattern == PatternKind::Zero) {
-    return ensure_sparse_file(path, size_bytes);
+    const Status sparse_status = ensure_sparse_file(path, size_bytes);
+    if (sparse_status.ok && statistics != nullptr) {
+      statistics->bytes_written = size_bytes;
+    }
+    return sparse_status;
   }
 
   std::ofstream output(path, std::ios::binary | std::ios::trunc);

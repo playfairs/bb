@@ -12,11 +12,13 @@ namespace bb {
 enum class Command {
   Create,
   Verify,
+  Size,
 };
 
 struct Options {
   Command command{Command::Create};
   std::filesystem::path output_path;
+  std::filesystem::path file_path;
   std::uint64_t size_bytes{0};
   PatternKind pattern{PatternKind::Zero};
   std::uint64_t seed{0xC0FFEE};
