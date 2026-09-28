@@ -6,9 +6,10 @@
 namespace bb {
 
 Status ensure_sparse_file(const std::filesystem::path& path, std::uint64_t size_bytes) {
-  if (path.parent_path() != ".") {
+  const std::filesystem::path parent_path = path.parent_path();
+  if (!parent_path.empty() && parent_path != ".") {
     std::error_code create_error;
-    std::filesystem::create_directories(path.parent_path(), create_error);
+    std::filesystem::create_directories(parent_path, create_error);
     if (create_error) {
       return Status::failure("unable to create parent directory: " + describe_error(create_error));
     }
